@@ -1,7 +1,9 @@
 FROM python:3.13-slim
 
 RUN apt-get update && \
-    apt-get install -y ffmpeg && \
+    apt-get install -y \
+    ffmpeg \
+    build-essential && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -11,4 +13,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["sh", "-c", "uvicorn api_server:app --host 0.0.0.0 --port ${PORT:-7860}"]
+EXPOSE 7860
+CMD ["uvicorn", "api_server:app", "--host", "0.0.0.0", "--port", "7860"]
